@@ -31,6 +31,17 @@ A formal response challenging hyper-generalization and false equivalence in AI a
 
 -----
 
+### 3. If You Cannot Reciprocate It, Employ It: Emotion, Labor, and the AI Economy
+
+> *AI systems detect emotion and cannot return it. That asymmetry is not a limitation to work around — it is a job description.*
+
+|Format           |Link                                                                                                                    |
+|-----------------|------------------------------------------------------------------------------------------------------------------------|
+|📄 Read the letter|[aahigh.github.io/letters/reciprocation.html](https://aahigh.github.io/letters/reciprocation.html)                      |
+|💻 View source    |[github.com/aahigh/letters/blob/main/reciprocation.html](https://github.com/aahigh/letters/blob/main/reciprocation.html)|
+
+-----
+
 *More letters forthcoming.*
 
 -----
