@@ -20,6 +20,17 @@ A formal response challenging hyper-generalization and false equivalence in AI a
 
 -----
 
+### 2. David, You’re Missing a Dimension
+
+> *A response to David Schwartz — Aaron Hightower*
+
+|Format           |Link                                                                                                          |
+|-----------------|--------------------------------------------------------------------------------------------------------------|
+|📄 Read the letter|[aahigh.github.io/letters/schwartz.html](https://aahigh.github.io/letters/schwartz.html)                      |
+|💻 View source    |[github.com/aahigh/letters/blob/main/schwartz.html](https://github.com/aahigh/letters/blob/main/schwartz.html)|
+
+-----
+
 *More letters forthcoming.*
 
 -----
