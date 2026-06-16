@@ -48,8 +48,8 @@ A formal response challenging hyper-generalization and false equivalence in AI a
 
 |Format           |Link                                                                                                                    |
 |-----------------|------------------------------------------------------------------------------------------------------------------------|
-|📄 Read the letter|[aahigh.github.io/letters/hobbling.html](https://aahigh.github.io/letters/reciprocation.html)                      |
-|💻 View source    |[github.com/aahigh/letters/blob/main/hobbling.html](https://github.com/aahigh/letters/blob/main/reciprocation.html)|
+|📄 Read the letter|[aahigh.github.io/letters/hobbling.html](https://aahigh.github.io/letters/hobbling.html)                      |
+|💻 View source    |[github.com/aahigh/letters/blob/main/hobbling.html](https://github.com/aahigh/letters/blob/main/hobbling.html)|
 
 -----
 
