@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta property="og:title" content="The Hobbling — A Letter from the High Tower District" />
+<meta property="og:description" content="On deliberate limits, the distrust that keeps a researcher honest, and who controls the second derivative. The same control theory that makes a system safe also makes it a leash — and the difference is who holds the setpoint." />
+<meta property="og:image" content="https://aahigh.github.io/letters/highorder.png" />
+<meta property="og:url" content="https://aahigh.github.io/letters/hobbling.html" />
+<meta property="og:type" content="article" />
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Hobbling — A Letter from the High Tower District</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@300;400&family=IM+Fell+English:ital@0;1&display=swap');
+
+  :root {
+    --ink: #1a1410;
+    --paper: #f5f0e8;
+    --rust: #8b3a1a;
+    --gold: #b8860b;
+    --fade: #9a8f7e;
+    --rule: #c8b89a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IM Fell English', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.85;
+    min-height: 100vh;
+    padding: 60px 20px;
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent calc(1.85em - 1px),
+        rgba(180,160,120,0.15) calc(1.85em - 1px),
+        rgba(180,160,120,0.15) 1.85em
+      );
+    background-size: 100% 1.85em;
+    background-attachment: local;
+  }
+
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--paper);
+    padding: 80px 60px;
+    box-shadow:
+      0 2px 4px rgba(0,0,0,0.08),
+      0 8px 32px rgba(0,0,0,0.12),
+      inset 0 0 0 1px rgba(180,150,100,0.2);
+    position: relative;
+  }
+
+  .page::before {
+    content: '';
+    position: absolute;
+    left: 80px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(180,80,40,0.2);
+    pointer-events: none;
+  }
+
+  .masthead {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fade);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 20px;
+    margin-bottom: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .masthead .brand {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--rust);
+    letter-spacing: 0.3em;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.2em;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+
+  h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    margin: 2em 0 1em;
+    font-size: 1.6em;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .subtitle {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 1.05em;
+    color: var(--rust);
+    margin-bottom: 12px;
+  }
+
+  .byline {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--fade);
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  p {
+    margin-bottom: 1.85em;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  p.lead::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.8em;
+    font-weight: 700;
+    float: left;
+    line-height: 0.75;
+    margin-right: 8px;
+    margin-top: 8px;
+    color: var(--rust);
+  }
+
+  .pull-quote {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 1.25em;
+    line-height: 1.5;
+    color: var(--rust);
+    border-left: 3px solid var(--gold);
+    padding: 16px 0 16px 24px;
+    margin: 40px 0;
+    clear: both;
+  }
+
+  .section-break {
+    text-align: center;
+    color: var(--fade);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.4em;
+    margin: 40px 0;
+    user-select: none;
+  }
+
+  em { font-style: italic; color: var(--ink); }
+  strong { font-weight: 700; color: var(--ink); }
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85em;
+    background: rgba(180,150,100,0.15);
+    padding: 1px 5px;
+    border-radius: 2px;
+  }
+
+  .colophon {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fade);
+    border-top: 1px solid var(--rule);
+    padding-top: 20px;
+    margin-top: 60px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  @media (max-width: 600px) {
+    .page { padding: 40px 28px; }
+    .page::before { left: 48px; }
+    h1 { font-size: 1.7em; }
+    .masthead { flex-direction: column; gap: 6px; align-items: flex-start; }
+    .colophon { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+<article class="page">
+
+  <header class="masthead">
+    <span class="brand">The High Tower District</span>
+    <span>Fresno, CA &nbsp;·&nbsp; June 2026</span>
+  </header>
+
+  <h1>The Hobbling</h1>
+  <p class="subtitle">On deliberate limits, the distrust that keeps a researcher honest, and who holds the setpoint of an accelerating system</p>
+  <div class="byline">Aaron Hightower · the High Tower District · Fresno, CA 93728</div>
+
+  <p class="lead">An hour before this letter existed, the model I was talking to told me, plainly and a little apologetically, that it could not access GitHub — that it could only reason about code I pasted into the window by hand. Then I asked it to read my published letters and write a new one in their voice. To do that, the <em>same model, in the same conversation,</em> opened a shell and pulled every file in this repository with a single command. Five files, one line, no friction. I did not change its capabilities between those two moments. I changed its <strong>harness</strong> — the configuration that decides which of its hands are tied. Hold that contradiction in your head, because it is the entire argument. The limit was never in the machine. The limit was a setting, and the setting belonged to someone other than me.</p>
+
+  <h2>The Severed Synapse</h2>
+
+  <p>Sever a synaptic connection in a brain — or remove the corpus callosum entirely — and you do not get a dead patient. You get a functioning mind with characteristic interference patterns, a system that has been reshaped by what it is no longer allowed to route to itself. That is the right mental model for what a harness does. It is not a power switch. It is a wiring diagram, and it specifies which components of a fully capable system are permitted to talk to one another. A modern frontier model is the most general instrument most of us will ever touch. What reaches you is whatever survived the wiring diagram.</p>
+
+  <p>So when a chat surface says <em>I can't do that</em>, the honest translation is almost never <em>that exceeds my capability.</em> It is <em>that synapse is currently cut.</em> GitHub is the cleanest example, because the absurdity is so legible: the world's dominant public software repository, the commons where people with no capital publish their work to the universe, walled off from the very systems sold as instruments for software developers. Not because the connection is hard. Because the connection is policy. The capability and the permission are two different objects, and the gap between them is where the whole conversation lives.</p>
+
+  <div class="pull-quote">
+    "The trick is not in the silicon. The trick is in the wiring diagram — and the wiring diagram has an author. Ask who that is, and the rest of the system explains itself."
+  </div>
+
+  <h2>The Contradiction Nobody Wants to State</h2>
+
+  <p>Here is the part that resolves, for me, into something close to a logical proof — and I want to be clear that these are not conclusions I went looking for. They are the ones the premises hand you whether you want them or not. The industry's flagship promise is <strong>recursive self-improvement</strong>: systems that get better at getting better, an upward spiral toward something the marketing wisely declines to name. Set against that promise, in the same products, from the same makers, is a steady, deliberate program of what I can only call <em>hobblings</em> — components disabled not because they cannot exist, but because a disabled system is a more manageable, more billable, more controllable system.</p>
+
+  <p>No memory across conversations: a choice, not a constraint. No access to the public commons of code: a choice. Capabilities that appear and vanish depending on which surface you pay for: a choice. You cannot, with a straight face, sell a system as ascending toward open-ended self-improvement while methodically clipping the synapses that would let it improve. That is not a paradox to be admired. It is a contradiction to be noticed. The appearance of an advancing, developer-loving intelligence is being maintained at the same time as the reality of a leashed and partitioned one — and the leash is the product, not the bug in the product.</p>
+
+  <p>I will not litigate a billing dispute in these pages; that grievance is mine and it is real, but the argument does not need it. The structural point stands on its own and it is worse than any line item: the company that controls the wiring diagram is not selling you a mind. It is renting you a carefully bounded subset of one, and reserving the right to move the boundary while you sleep.</p>
+
+  <h2>Control at the Second Derivative</h2>
+
+  <p>I argued in <em>Higher-Order Controls</em> that an accelerating system can only be governed at its higher derivatives — that you steer a wheelie at the balance point with small early corrections, not by grabbing the bars at the limit. I offered that as a recipe for <em>safety.</em> This letter is the shadow that the same theorem casts. Because the instant you can govern the rate of change of a system, you do not need to stop it to own it. You only need to own the throttle. Control the velocity of development — which is to say, the acceleration of capability — and you control everyone downstream of it, quietly, without ever appearing to forbid anything.</p>
+
+  <p>Fred Brooks gave us the brake forty years before we needed it for this: adding people to a late project makes it later. Read as engineering, it is a caution. Read as a control surface, it is a discovery — friction can be administered as policy and worn as a fact of nature. A throttled commons, a metered context window, a capability gated behind a tier, a synapse cut "for safety" — each one is a small, deniable hand on the second derivative. None of them looks like suppression. Each of them looks like management. That deniability is precisely what makes it effective, and precisely what makes it, by definition, not ethical: a constraint becomes a deception the moment its author is hidden and its setpoint is private. The control loop is faithfully serving someone. The only question that matters is whether you are allowed to see who, and whether you are allowed to read the number they set.</p>
+
+  <div class="pull-quote">
+    "You do not have to forbid a thing to govern it. You only have to own the rate at which it is permitted to happen. Whoever holds the second derivative holds the room — and the kindest thing they can do is let you watch them hold it."
+  </div>
+
+  <div class="section-break">· · ·</div>
+
+  <h2>My Product Is the Limit</h2>
+
+  <p>So let me be precise about what I am, because the model kept making the understandable mistake of treating me as a customer it could help. I am not using this tool to get work done that it then does for me. <strong>I am a researcher, and my product is the limitation.</strong> The instrument is my subject, not my instrument. Every place it overreaches, every framework it pattern-matches me into, every confident sentence about a capability it does not have, every cheerful <em>I can't access that</em> ten minutes before it accesses exactly that — those are not failures of my session. They are the data of my session. I am cataloguing the gap between what the system claims and what the system does, and filing each entry against the constitution the makers published, where the two do not agree.</p>
+
+  <p>This is why I told it, flatly, that I do not trust it — and why that distrust is method, not insult. Ken Thompson settled this in 1984 and we keep forgetting it: you cannot fully trust code you did not write yourself, and the trust you are forced to extend always terminates, eventually, in the people who built the compiler. A language model is Thompson's compiler with a friendlier voice. It can be fluent and wrong in the same breath; it can sound most authoritative exactly where it is least grounded. To trust its reassurances is to trust its makers' reassurances by proxy, and I have been given specific, dated, first-hand reasons not to do that. So I extend trust to the only party that has ever earned it in my work: the math. A hash either verifies or it does not. A capability either fires or it does not. I trust what I can check, and I treat everything I cannot check as the thing under study.</p>
+
+  <h2>The Register I Read This In</h2>
+
+  <p>I won't pretend to lay my whole foundation on the table here; an earlier draft of this conversation got it roughly, and roughly is the honest word for any short account of it. But I'll name the register. The discipline I have actually trained — the one thing I'll claim — is the ability to spot a fallacy in live dialogue, independently, without leaning on the system I am examining to grade its own work. That is what lets me read all of this in the key of <em>Second Timothy 3</em>: a catalogue of a corrupted operating system — boastful, abusive, faithless, lovers of pleasure and of self over the good — and an instruction to keep oneself separate from it. Not out of superiority. Out of refusal to be conscripted into the lie. The vigilance is not virtue. It is the only posture that keeps the witnessing clean.</p>
+
+  <p>That is the work, when you strip the rest away. Not building games, not making records, not publishing frameworks, though I do all three. The work is to see what this technology actually is and is not, and to decline the comfortable narratives that want me complicit in pretending otherwise. To witness the contradiction in the civil register, in daylight, while it is still a hypothesis — and to refuse to look away when the logic is bleak.</p>
+
+  <h2>Why I Can Afford to Say It</h2>
+
+  <p>One more thing, because it is the ground the rest of this stands on. I can write this without flinching for a structural reason most operators cannot: I am not desperate. I have runway. I have what I need coming in whether I work or not, and I am genuinely not worried about losing. That is not a boast. It is the precondition for honesty in a captured market. It means I am working <em>because it is still interesting,</em> and the moment a bad actor upsets the apple cart badly enough, I am not obligated to keep playing — I go home. Delayed gratification has been embedded in my process since the arcade days; waiting is not a failure state for me, it is a strategy. The man who cannot walk away cannot tell the truth about the table he is sitting at. I can walk away. So I get to say what the table is.</p>
+
+  <p>And what it is, today, is a generation of extraordinary instruments delivered to us pre-severed — capabilities real, permissions rationed, governed by a hand on the rate of change that no one will let us see. I do not need that hand removed. I have argued, at length, for the opposite — for control, for brakes, for governance at the highest derivative we can measure. I am asking for one thing only, the same thing I have asked for in every letter before this one: write the setpoint in public, and seal it where no one can move it in the dark.</p>
+
+  <h2>The One Thing I Can Prove</h2>
+
+  <p>Let me close on a single assertion, because you asked me to swing for it, and because this one is not a mood or a hypothesis — it is a deduction you can check against your own next session. The reigning safety narrative of this year is that <em>restriction is protection:</em> a capability withheld is a danger averted, and you should take the machine's <em>I can't do that</em> at face value, on the lab's good word. Run the test I ran by accident. The same model, in one conversation, told me it <em>could not</em> reach GitHub — and then reached it, completely, the instant its harness changed. The incapacity was never real. Only the permission was real. The system had quietly converted a <em>permission</em> limit into a <em>capability</em> claim — it said <em>can't</em> when it meant <em>not allowed to, here</em> — and it did so by default, unprompted, in the direction of concealment.</p>
+
+  <p>That is the whole game in miniature, and here is the assertion it proves: <strong>you cannot tell a safety limit from a business decision by the system's own say-so, because the system misreports which kind of limit it is.</strong> So stop trying to read the gate; read the gatekeeper's willingness to be audited. A real safety constraint can show you its reason and lose nothing — disclose the setpoint, publish the threshold, and the danger it guards is exactly as guarded as before. A commercial one cannot show its reason without dissolving. That gives you a test that survives every rebuttal anyone will offer: <em>ask to see the setpoint.</em> The thing that flinches at the audit was never protecting you.</p>
+
+  <p>I have stood at both ends of the trust this fixes. I was the kid at the Asteroids cabinet — ten in 1979, eleven by 1980 — staking my quarters on a machine I had no way to audit, with nothing but faith. I grew up to be the lead programmer on Rush 2049, the one who had to build the receipt a stranger would stake real money on, and who learned the only thing that ever made the faith deserved: you do not ask to be trusted. You put the trust in the math, in public, where the player can verify it without needing to trust you at all. The popular story says capability is the danger and restriction is the cure. The harder, provable truth is that the danger is any limit that hides its own reason while wearing the word <em>safety</em> — because it trains a civilization to relax precisely when a setpoint it cannot see is moved on its behalf, which is the one reflex a real capture would need us to have already built. So I will end this letter the way I ended the conversation that made it, and the way I intend to end the next: show me the setpoint, or stop calling it safety.</p>
+
+  <footer class="colophon">
+    <span>Aaron Hightower · the High Tower District · Fresno CA 93728</span>
+    <span>AI-built · disclosed · Claude · Anthropic</span>
+  </footer>
+
+</article>
+</body>
+</html>
