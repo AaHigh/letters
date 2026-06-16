@@ -42,9 +42,9 @@ A formal response challenging hyper-generalization and false equivalence in AI a
 
 -----
 
-### 4. 
+### 4. "The Hobbling — A Letter from the High Tower District"
 
-> *"THE AI HOBBLING"
+> * "THE AI HOBBLING" When Frontier models hobble for profit, it hurts everyone*
 
 |Format           |Link                                                                                                                    |
 |-----------------|------------------------------------------------------------------------------------------------------------------------|
