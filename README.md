@@ -44,7 +44,7 @@ A formal response challenging hyper-generalization and false equivalence in AI a
 
 ### 4. "The Hobbling — A Letter from the High Tower District"
 
-> * "THE AI HOBBLING" When Frontier models hobble for profit, it hurts everyone*
+> On deliberate limits, the distrust that keeps a researcher honest, and who holds the setpoint of an accelerating system
 
 |Format           |Link                                                                                                                    |
 |-----------------|------------------------------------------------------------------------------------------------------------------------|
