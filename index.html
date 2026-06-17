@@ -8,7 +8,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="LETTERS — the High Tower District">
 <meta property="og:description" content="Essays on AI governance, control systems, and verified human work by Aaron Hightower.">
-<meta property="og:url" content="https://ahightower.com/letters">
+<meta property="og:url" content="https://aahigh.github.io/letters/">
 <meta property="og:image" content="https://aahigh.github.io/aahigh/letters.png">
 <meta property="og:image:width" content="800">
 <meta property="og:image:height" content="800">
@@ -187,7 +187,7 @@ footer .sep{color:#442266;margin:0 0.5rem}
   <footer>
     <a href="https://github.com/aahigh/letters" target="_blank" rel="noopener">GitHub Repository</a>
     <span class="sep">·</span>
-    <a href="https://ahightower.com" target="_blank" rel="noopener">Home</a>
+    <a href="https://aahigh.github.io/aahigh/" target="_blank" rel="noopener">Home</a>
     <span class="sep">·</span>
     <a href="https://linkedin.com/in/ahigh" target="_blank" rel="noopener">LinkedIn</a>
     <br><br>
@@ -626,40 +626,68 @@ const essays = [
     excerpt: "When synthetic output becomes infinite and free in every modality at once, scarcity cannot relocate to another modality. It has to relocate somewhere structurally different. A control-systems reading of native multimodality, and what it means for human economic value.",
     tags: ["ai-governance", "control-systems", "economic-policy"],
     sources: {
-      markdown: "https://github.com/aahigh/letters/blob/main/provenance-economy.md",
-      html: "https://github.com/aahigh/letters/blob/main/provenance-economy.html"
+      markdown: "https://github.com/aahigh/letters/blob/main/provenance-economy.md"
     },
     defaultSource: "markdown",
-    live: "https://ahightower.com/letters/provenance-economy",
-    og_image: "https://ahightower.com/og-provenance-economy.png"
+    // no dedicated HTML page yet — both buttons point at the GitHub-rendered markdown until one exists
+    live: "https://aahigh.github.io/aahigh/letters/provenance-economy.md",
+    og_image: "https://aahigh.github.io/aahigh/letters.png"
   },
   {
-    id: "hightower-derivative",
-    title: "The Hightower Derivative",
-    subtitle: "Why AI Changes the Rate of Change, Not the Thinker",
+    id: "hobbling",
+    title: "The Hobbling",
+    subtitle: "A Letter from the High Tower District",
+    date: "2026-06-16",
+    excerpt: "On deliberate limits, the distrust that keeps a researcher honest, and who holds the setpoint of an accelerating system. The same control theory that makes a system safe also makes it a leash — and the difference is who holds the setpoint.",
+    tags: ["ai-governance", "control-systems"],
+    sources: {
+      html: "https://github.com/aahigh/letters/blob/main/hobbling.html"
+    },
+    defaultSource: "html",
+    live: "https://aahigh.github.io/letters/hobbling.html",
+    og_image: "https://aahigh.github.io/letters/hobbling.png"
+  },
+  {
+    id: "schwartz",
+    title: "David, You're Missing a Dimension",
+    subtitle: "A Response to David Schwartz",
+    date: "2026-06-01",
+    excerpt: "A response to \u201cA Few AI Implications We Might Want to Think About.\u201d AI-assisted and AI-authored are not the same category — and the difference is not a technicality.",
+    tags: ["ai-governance"],
+    sources: {
+      html: "https://github.com/aahigh/letters/blob/main/schwartz.html"
+    },
+    defaultSource: "html",
+    live: "https://aahigh.github.io/letters/schwartz.html",
+    og_image: "https://aahigh.github.io/letters/schwartz.jpg"
+  },
+  {
+    id: "reciprocation",
+    title: "If You Cannot Reciprocate It, Employ It",
+    subtitle: "Emotion, Labor, and the AI Economy",
+    date: "2026-04-13",
+    excerpt: "AI systems detect emotion and cannot return it. That asymmetry is not a limitation to work around — it is a job description.",
+    tags: ["ai-governance", "economic-policy"],
+    sources: {
+      html: "https://github.com/aahigh/letters/blob/main/reciprocation.html"
+    },
+    defaultSource: "html",
+    live: "https://aahigh.github.io/letters/reciprocation.html",
+    og_image: "https://aahigh.github.io/letters/reciprocate.png"
+  },
+  {
+    id: "highorder",
+    title: "Higher-Order Controls",
+    subtitle: "Consciousness, Harnesses, and the Public Ledger of Constraint",
     date: "2026-04-01",
-    excerpt: "A framework asserting that AI changes the rate of change of cognitive output rather than displacing thinking. Maps onto PID control theory and has implications for governance, surveillance, and the future of human economic value.",
+    excerpt: "If something like consciousness is arriving — or something we can't distinguish from it — then governance belongs at the highest derivatives, written in public, verified by math.",
     tags: ["ai-governance", "control-systems", "cryptography"],
     sources: {
-      markdown: "https://github.com/aahigh/letters/blob/main/hightower-derivative.md"
+      html: "https://github.com/aahigh/letters/blob/main/highorder.html"
     },
-    defaultSource: "markdown",
-    live: "https://ahightower.com/letters/hightower-derivative",
-    og_image: "https://ahightower.com/og-hightower-derivative.png"
-  },
-  {
-    id: "higher-order-controls",
-    title: "Higher-Order Controls",
-    subtitle: "AI Governance, Hash-Committed Constraints, and the Proof-of-Human Ledger",
-    date: "2026-03-15",
-    excerpt: "A formal letter on AI governance connecting arcade control-systems background to PID-loop governance frameworks, hash-committed constraint architecture, and the principle that the math—not the operator—should be the trusted party.",
-    tags: ["ai-governance", "cryptography"],
-    sources: {
-      markdown: "https://github.com/aahigh/letters/blob/main/higher-order-controls.md"
-    },
-    defaultSource: "markdown",
-    live: "https://ahightower.com/letters/higher-order-controls",
-    og_image: "https://ahightower.com/og-higher-order-controls.png"
+    defaultSource: "html",
+    live: "https://aahigh.github.io/letters/highorder.html",
+    og_image: "https://aahigh.github.io/letters/highorder.png"
   }
 ];
 
