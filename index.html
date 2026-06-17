@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>LETTERS — the High Tower District</title>
+<meta name="description" content="Essays on AI governance, control systems, and verified human work. the High Tower District, Fresno CA.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LETTERS — the High Tower District">
+<meta property="og:description" content="Essays on AI governance, control systems, and verified human work by Aaron Hightower.">
+<meta property="og:url" content="https://ahightower.com/letters">
+<meta property="og:image" content="https://aahigh.github.io/aahigh/ahightower.png">
+<meta property="og:image:width" content="800">
+<meta property="og:image:height" content="800">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://aahigh.github.io/aahigh/ahightower.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="LETTERS">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#080018;overflow:hidden;
+  position:fixed;inset:0;touch-action:none;font-family:monospace}
+canvas#cv{display:block;position:fixed;top:0;left:0;touch-action:none;z-index:1}
+
+.sr-only{position:absolute;left:-9999px;top:-9999px}
+
+/* ── HUB PANEL — DOM overlay for the actual essay content ───────── */
+#hub-panel{
+  position:fixed;
+  z-index:5;
+  overflow-y:auto;
+  overflow-x:hidden;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.6s ease;
+  -webkit-overflow-scrolling:touch;
+}
+#hub-panel.visible{opacity:1;pointer-events:auto}
+#hub-panel::-webkit-scrollbar{width:6px}
+#hub-panel::-webkit-scrollbar-thumb{background:#5500aa}
+#hub-panel::-webkit-scrollbar-track{background:rgba(0,0,16,0.4)}
+
+.controls{
+  display:flex;
+  gap:0.6rem;
+  flex-wrap:wrap;
+  align-items:center;
+  margin-bottom:1.4rem;
+  padding-bottom:1rem;
+  border-bottom:1px solid #442266;
+}
+
+.pill{
+  padding:0.35rem 0.7rem;
+  border:1px solid #5500aa;
+  background:rgba(0,0,16,0.6);
+  color:#aa88ff;
+  cursor:pointer;
+  font-family:monospace;
+  font-size:0.72rem;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  transition:all 0.2s ease;
+  white-space:nowrap;
+}
+.pill:hover{border-color:#00ffaa;color:#00ffaa}
+.pill.active{border-color:#ff8800;color:#ff8800;background:rgba(255,136,0,0.1);
+  box-shadow:0 0 8px rgba(255,136,0,0.4)}
+
+.view-toggle{display:flex;gap:0.4rem;margin-left:auto}
+
+.essays-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));
+  gap:1.2rem;
+}
+.essays-list{display:flex;flex-direction:column;gap:0.9rem}
+
+.essay-card{
+  border:1px solid #5500aa;
+  background:rgba(8,0,24,0.78);
+  padding:1.1rem 1.2rem;
+  transition:border-color 0.25s ease, box-shadow 0.25s ease;
+  position:relative;
+}
+.essay-card:hover{border-color:#00ffaa;box-shadow:0 0 14px rgba(0,255,170,0.18)}
+
+/* ATM-style corner notches on each card, echoing the page brackets */
+.essay-card::before, .essay-card::after{
+  content:'';
+  position:absolute;
+  width:10px;height:10px;
+  border-color:#5500aa;
+  pointer-events:none;
+}
+.essay-card::before{top:-1px;left:-1px;border-top:2px solid;border-left:2px solid}
+.essay-card::after{bottom:-1px;right:-1px;border-bottom:2px solid;border-right:2px solid}
+
+.essay-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:0.68rem;color:#7755aa;letter-spacing:1px;
+  text-transform:uppercase;margin-bottom:0.6rem;
+}
+
+.title-canvas{display:block;width:100%;height:34px;margin-bottom:0.55rem}
+
+.essay-subtitle{
+  font-size:0.78rem;color:#aa88ff;font-style:italic;
+  margin-bottom:0.7rem;letter-spacing:0.2px;line-height:1.4;
+}
+.essay-excerpt{
+  font-size:0.82rem;color:#c9b8ff;opacity:0.85;
+  margin-bottom:1rem;line-height:1.55;
+}
+
+.essay-tags{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:0.9rem}
+.essay-tag{
+  font-size:0.62rem;padding:0.2rem 0.45rem;border:1px solid #442266;
+  color:#7755aa;text-transform:lowercase;letter-spacing:0.5px;
+}
+
+.format-toggle{display:flex;gap:0.35rem;align-items:center;margin-bottom:0.8rem}
+.format-label{font-size:0.6rem;color:#442266;letter-spacing:1px;text-transform:uppercase;margin-right:0.15rem}
+.format-pill{
+  font-size:0.6rem;padding:0.18rem 0.5rem;border:1px solid #5500aa;
+  background:transparent;color:#7755aa;cursor:pointer;font-family:monospace;
+  letter-spacing:1px;text-transform:uppercase;
+}
+.format-pill.active{border-color:#00ffaa;color:#00ffaa}
+
+.essay-links{display:flex;gap:0.6rem;padding-top:0.8rem;border-top:1px solid #2a1850}
+
+.btn{
+  flex:1;text-align:center;padding:0.5rem;font-size:0.74rem;
+  letter-spacing:1px;text-transform:uppercase;text-decoration:none;
+  font-family:monospace;border:1px solid #5500aa;color:#aa88ff;
+  background:rgba(0,0,16,0.5);transition:all 0.2s ease;
+}
+.btn:hover{border-color:#00ffaa;color:#00ffaa}
+
+/* Primary CTA — hue-cycling border, same spirit as the splash "TAP TO ENTER" button */
+@property --hue{syntax:'<number>';inherits:false;initial-value:0}
+.btn-primary{
+  --hue:0;
+  border:2px solid hsl(var(--hue),100%,60%);
+  box-shadow:0 0 9px hsl(var(--hue),100%,50%);
+  animation:hueSpin 4.5s linear infinite;
+  color:#fff;
+}
+@keyframes hueSpin{to{--hue:360}}
+
+footer{
+  margin-top:2rem;padding-top:1.4rem;border-top:1px solid #442266;
+  text-align:center;font-size:0.72rem;color:#7755aa;letter-spacing:0.5px;
+  padding-bottom:2rem;
+}
+footer a{color:#aa88ff;text-decoration:none}
+footer a:hover{color:#00ffaa}
+footer .sep{color:#442266;margin:0 0.5rem}
+
+.count-line{font-size:0.68rem;color:#442266;letter-spacing:1px;text-transform:uppercase;margin-bottom:1.1rem}
+</style>
+</head>
+<body>
+
+<h1 class="sr-only">LETTERS — the High Tower District. Essays on AI governance, control systems, and verified human work by Aaron Hightower.</h1>
+
+<canvas id="cv"></canvas>
+
+<div id="hub-panel">
+  <div class="count-line">PUBLISHED: <span id="essay-count">0</span> · AARON HIGHTOWER · 559 (FRESNO)</div>
+
+  <div class="controls">
+    <button class="pill active" data-tag="all">ALL</button>
+    <button class="pill" data-tag="ai-governance">AI GOVERNANCE</button>
+    <button class="pill" data-tag="control-systems">CONTROL SYSTEMS</button>
+    <button class="pill" data-tag="economic-policy">ECONOMIC POLICY</button>
+    <button class="pill" data-tag="cryptography">CRYPTOGRAPHY</button>
+    <div class="view-toggle">
+      <button class="pill active" data-view="grid">GRID</button>
+      <button class="pill" data-view="list">LIST</button>
+    </div>
+  </div>
+
+  <div id="essays-container" class="essays-grid"></div>
+
+  <footer>
+    <a href="https://github.com/aahigh/letters" target="_blank" rel="noopener">GitHub Repository</a>
+    <span class="sep">·</span>
+    <a href="https://ahightower.com" target="_blank" rel="noopener">Home</a>
+    <span class="sep">·</span>
+    <a href="https://linkedin.com/in/ahigh" target="_blank" rel="noopener">LinkedIn</a>
+    <br><br>
+    the High Tower District — Fresno, California
+  </footer>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// LETTERS — canvas-native frame, same pipeline as CELLTOWER /
+// ahightower.com. Background, header, ticker, brackets, and the
+// splash screen are pixel-identical to the rest of the ecosystem.
+// The essay browser itself is a DOM overlay (same pattern CELLTOWER
+// uses for its receipt / paste / copy overlays on top of canvas).
+// ═══════════════════════════════════════════════════════════════
+
+const cv  = document.getElementById('cv');
+const CTX = cv.getContext('2d');
+
+let SW, SH, PORTRAIT;
+let AT = 0, _last = 0;
+
+// ── COLORS — same palette as CELLTOWER / ahightower.com ─────
+const C = {
+  bg:     '#080018',
+  border: '#5500aa',
+  borderHi:'#00ffaa',
+  cyan:   '#00ffff',
+  orange: '#ff8800',
+  purple: '#aa88ff',
+  white:  '#ffffff',
+  dim:    '#442266',
+  green:  '#00ff88',
+  red:    '#ff4444',
+};
+
+// ── DM FONT — exact copy from CELLTOWER ─────────────────────
+const DM_FONT = (()=>{
+  const F={};
+  const d=(c,...v)=>{F[c]=v;};
+  d(' ',0x00,0x00,0x00,0x00,0x00);
+  d('!',0x00,0x00,0x5F,0x00,0x00);
+  d('.',0x00,0x60,0x60,0x00,0x00);
+  d('-',0x08,0x08,0x08,0x08,0x08);
+  d('/',0x20,0x10,0x08,0x04,0x02);
+  d(':',0x00,0x36,0x36,0x00,0x00);
+  d('0',0x3E,0x51,0x49,0x45,0x3E);
+  d('1',0x00,0x42,0x7F,0x40,0x00);
+  d('2',0x42,0x61,0x51,0x49,0x46);
+  d('3',0x21,0x41,0x45,0x4B,0x31);
+  d('4',0x18,0x14,0x12,0x7F,0x10);
+  d('5',0x27,0x45,0x45,0x45,0x39);
+  d('6',0x3C,0x4A,0x49,0x49,0x30);
+  d('7',0x01,0x71,0x09,0x05,0x03);
+  d('8',0x36,0x49,0x49,0x49,0x36);
+  d('9',0x06,0x49,0x49,0x29,0x1E);
+  d('A',0x7E,0x11,0x11,0x11,0x7E);
+  d('B',0x7F,0x49,0x49,0x49,0x36);
+  d('C',0x3E,0x41,0x41,0x41,0x22);
+  d('D',0x7F,0x41,0x41,0x22,0x1C);
+  d('E',0x7F,0x49,0x49,0x49,0x41);
+  d('F',0x7F,0x09,0x09,0x09,0x01);
+  d('G',0x3E,0x41,0x49,0x49,0x7A);
+  d('H',0x7F,0x08,0x08,0x08,0x7F);
+  d('I',0x00,0x41,0x7F,0x41,0x00);
+  d('J',0x20,0x40,0x41,0x3F,0x01);
+  d('K',0x7F,0x08,0x14,0x22,0x41);
+  d('L',0x7F,0x40,0x40,0x40,0x40);
+  d('M',0x7F,0x02,0x04,0x02,0x7F);
+  d('N',0x7F,0x04,0x08,0x10,0x7F);
+  d('O',0x3E,0x41,0x41,0x41,0x3E);
+  d('P',0x7F,0x09,0x09,0x09,0x06);
+  d('Q',0x3E,0x41,0x51,0x21,0x5E);
+  d('R',0x7F,0x09,0x19,0x29,0x46);
+  d('S',0x46,0x49,0x49,0x49,0x31);
+  d('T',0x01,0x01,0x7F,0x01,0x01);
+  d('U',0x3F,0x40,0x40,0x40,0x3F);
+  d('V',0x1F,0x20,0x40,0x20,0x1F);
+  d('W',0x3F,0x40,0x38,0x40,0x3F);
+  d('X',0x63,0x14,0x08,0x14,0x63);
+  d('Y',0x07,0x08,0x70,0x08,0x07);
+  d('Z',0x61,0x51,0x49,0x45,0x43);
+  d('[',0x00,0x7F,0x41,0x41,0x00);
+  d(']',0x00,0x41,0x41,0x7F,0x00);
+  d('_',0x40,0x40,0x40,0x40,0x40);
+  d('\x03',0x04,0x2A,0x75,0x2A,0x04); // radio tower glyph
+  'abcdefghijklmnopqrstuvwxyz'.split('').forEach((c,i)=>{
+    F[c]=F[String.fromCharCode(65+i)]||F[' '];
+  });
+  return F;
+})();
+
+// ── DM WORD LABEL — exact from CELLTOWER ────────────────────
+function _dmWordLabel(ctx, word, x, y, w, h, color){
+  const str=word.toUpperCase(); const n=str.length; if(!n)return;
+  const dotW=Math.min(w/(n*6), h/8);
+  const dotH=dotW;
+  const charW=6*dotW; const charH=7*dotH;
+  const totalW=n*charW;
+  const startX=x+(w-totalW)/2;
+  const startY=y+(h-charH)/2;
+  ctx.fillStyle=color||'#fff';
+  ctx.shadowColor=color||'#fff';
+  ctx.shadowBlur=dotW*1.5;
+  for(let ci=0;ci<n;ci++){
+    const ch=str[ci];
+    const glyph=DM_FONT[ch]||DM_FONT[' '];
+    const ox=startX+ci*charW;
+    for(let col=0;col<5;col++){
+      const colBits=glyph[col]||0;
+      for(let row=0;row<7;row++){
+        if(colBits&(1<<row)){
+          ctx.fillRect(ox+col*dotW, startY+row*dotH,
+            Math.max(1,dotW-0.5), Math.max(1,dotH-0.5));
+        }
+      }
+    }
+  }
+  ctx.shadowBlur=0;
+}
+
+// Rainbow per-character — exact formula from CELLTOWER identity screen
+function _dmRainbow(ctx, str, x, y, w, h, t){
+  const n=str.length; if(!n)return;
+  const dotW=Math.min(w/(n*6), h/8);
+  const dotH=dotW;
+  const charW=6*dotW; const charH=7*dotH;
+  const totalW=n*charW;
+  const startX=x+(w-totalW)/2;
+  const startY=y+(h-charH)/2;
+  for(let ci=0;ci<n;ci++){
+    const hue=(t*60+ci*(360/n))%360;
+    const col=`hsl(${hue},100%,62%)`;
+    const ch=str[ci].toUpperCase();
+    const glyph=DM_FONT[ch]||DM_FONT[' '];
+    const ox=startX+ci*charW;
+    ctx.fillStyle=col; ctx.shadowColor=col; ctx.shadowBlur=dotW*2.5;
+    for(let c=0;c<5;c++){
+      const colBits=glyph[c]||0;
+      for(let row=0;row<7;row++){
+        if(colBits&(1<<row)){
+          ctx.fillRect(ox+c*dotW, startY+row*dotH,
+            Math.max(1,dotW-0.5), Math.max(1,dotH-0.5));
+        }
+      }
+    }
+  }
+  ctx.shadowBlur=0;
+}
+
+// ── RESIZE ────────────────────────────────────────────────────
+let headerBottom=0, tickerTop=0;
+function resize(){
+  SW=document.documentElement.clientWidth||window.innerWidth||390;
+  SH=document.documentElement.clientHeight||window.innerHeight||844;
+  cv.width=SW; cv.height=SH;
+  cv.style.width=SW+'px'; cv.style.height=SH+'px';
+  PORTRAIT=(SH>SW);
+
+  headerBottom = PORTRAIT? SH*0.18 : SH*0.23;
+  tickerTop    = SH - SH*0.04 - 4;
+  layoutPanel();
+}
+
+function layoutPanel(){
+  const panel=document.getElementById('hub-panel');
+  const sideMargin = Math.max(16, Math.round(SW*0.06));
+  panel.style.top    = headerBottom+'px';
+  panel.style.bottom = (SH-tickerTop)+'px';
+  panel.style.left   = sideMargin+'px';
+  panel.style.right  = sideMargin+'px';
+  panel.style.padding = '0.4rem 0.2rem 0 0.2rem';
+}
+
+// ── TICKER ───────────────────────────────────────────────────
+let _mqX=0;
+const MARQUEE_MSGS=[
+  'THE HIGH TOWER DISTRICT \u00b7 FRESNO CA \u00b7 AHIGHTOWER.COM \u00b7 ',
+  'LETTERS \u00b7 AI GOVERNANCE \u00b7 CONTROL SYSTEMS \u00b7 ECONOMIC POLICY \u00b7 ',
+  'GITHUB.COM/AAHIGH/LETTERS \u00b7 PROOF OF HUMAN COGNITION \u00b7 ',
+];
+let _mqMsg=MARQUEE_MSGS.join('');
+let _mqHueOff=0;
+
+function _drawTicker(dt){
+  const TH=Math.round(SH*0.04);
+  const TY=SH-TH;
+  CTX.fillStyle='rgba(0,0,16,0.9)';
+  CTX.fillRect(0,TY,SW,TH);
+  CTX.strokeStyle=C.border; CTX.lineWidth=1;
+  CTX.beginPath(); CTX.moveTo(0,TY); CTX.lineTo(SW,TY); CTX.stroke();
+
+  const PX_PER_SEC=SW*0.18;
+  _mqX-=PX_PER_SEC*dt;
+  _mqHueOff+=PX_PER_SEC*0.5*dt;
+
+  const dotH=TH*0.55;
+  const dotW=dotH/8*1.1;
+  const charW=6*dotW; const charH=7*(dotW);
+  const totalW=_mqMsg.length*charW;
+  if(_mqX<-totalW) _mqX+=totalW;
+
+  for(let copy=0;copy<2;copy++){
+    const ox=_mqX+copy*totalW;
+    for(let ci=0;ci<_mqMsg.length;ci++){
+      const cx2=ox+ci*charW;
+      if(cx2<-charW||cx2>SW+charW) continue;
+      const hue=((_mqHueOff+ci*charW)*0.8)%360;
+      const col=`hsl(${hue},100%,62%)`;
+      const ch=_mqMsg[ci].toUpperCase();
+      const glyph=DM_FONT[ch]||DM_FONT[' '];
+      CTX.fillStyle=col; CTX.shadowColor=col; CTX.shadowBlur=3;
+      for(let c=0;c<5;c++){
+        const bits=glyph[c]||0;
+        for(let row=0;row<7;row++){
+          if(bits&(1<<row)){
+            CTX.fillRect(
+              Math.round(cx2+c*dotW),
+              Math.round(TY+(TH-charH)/2+row*dotW),
+              Math.max(1,dotW-0.5), Math.max(1,dotW-0.5)
+            );
+          }
+        }
+      }
+    }
+  }
+  CTX.shadowBlur=0;
+}
+
+// ── CORNER BRACKETS — exact from ahightower.com ─────────────
+function _drawBrackets(){
+  const s=Math.round(SW*0.05);
+  const m=Math.round(SW*0.03);
+  const T=Math.round(SH*0.04)+m;
+  const B=SH-Math.round(SH*0.04)-m;
+  CTX.strokeStyle=C.border; CTX.lineWidth=2;
+  [[m,T,1,1],[SW-m,T,-1,1],[m,B,1,-1],[SW-m,B,-1,-1]].forEach(([x,y,dx,dy])=>{
+    CTX.beginPath();
+    CTX.moveTo(x+s*dx,y); CTX.lineTo(x,y); CTX.lineTo(x,y+s*dy);
+    CTX.stroke();
+  });
+}
+
+// ── HEADER — rainbow "LETTERS" exactly like ahightower.com ──
+function _drawHeader(){
+  const str='LETTERS';
+  const hY=PORTRAIT?SH*0.04:SH*0.05;
+  const hH=PORTRAIT?SH*0.07:SH*0.10;
+  const hX=SW*0.04; const hW=SW*0.92;
+  _dmRainbow(CTX, str, hX, hY, hW, hH, AT);
+
+  const sub='THE HIGH TOWER DISTRICT \u00b7 FRESNO CA';
+  CTX.font=`600 ${Math.round(SW*0.022)}px monospace`;
+  CTX.fillStyle=C.dim; CTX.textAlign='center'; CTX.textBaseline='top';
+  CTX.shadowBlur=0;
+  CTX.fillText(sub, SW/2, hY+hH+SW*0.01);
+}
+
+// ── SPLASH SCREEN — adapted from CELLTOWER drawStartScreen ──
+// VU meter bars + oscilloscope waves + pulsing "TAP TO ENTER" button
+let STATE='SPLASH';
+
+function drawSplash(t){
+  const bx=SW*0.06, by=headerBottom, bw=SW*0.88, bh=tickerTop-headerBottom;
+
+  CTX.fillStyle='rgba(0,0,0,0.55)';
+  CTX.fillRect(bx,by,bw,bh);
+
+  // VU meter bars
+  const barCount=18;
+  const barW=bw/barCount;
+  const maxBarH=bh*0.40;
+  const barBaseY=by+bh*0.62;
+
+  for(let i=0;i<barCount;i++){
+    const phase=i*1.3+0.7;
+    const speed=0.4+(i%5)*0.15;
+    const frac=0.15+0.85*Math.abs(Math.sin(t*speed+phase));
+    const barH=maxBarH*frac;
+    const bBarX=bx+i*barW+barW*0.08;
+    const bBarW=barW*0.78;
+
+    const segH=Math.max(3,bh*0.018);
+    const segGap=Math.max(1,segH*0.35);
+    const segStep=segH+segGap;
+    const numSegs=Math.floor(barH/segStep);
+
+    for(let s=0;s<numSegs;s++){
+      const segFrac=s/Math.max(1,Math.floor(maxBarH/segStep));
+      let r,g,b;
+      if(segFrac<0.6){ r=0; g=200; b=40+(segFrac*80)|0; }
+      else if(segFrac<0.82){ const f=(segFrac-0.6)/0.22; r=(f*255)|0; g=200; b=0; }
+      else { const f=(segFrac-0.82)/0.18; r=255; g=(200*(1-f))|0; b=0; }
+      const alpha=0.7+0.3*frac;
+      CTX.fillStyle=`rgba(${r},${g},${b},${alpha})`;
+      CTX.shadowColor=`rgb(${r},${g},${b})`;
+      CTX.shadowBlur=segH*1.2;
+      const sy=barBaseY-(s+1)*segStep;
+      CTX.fillRect(bBarX,sy,bBarW,segH);
+    }
+    const peakFrac=0.2+0.78*Math.abs(Math.sin(t*speed*0.3+phase+1.1));
+    const peakH=maxBarH*Math.max(frac,peakFrac);
+    const peakY=barBaseY-peakH-segStep;
+    CTX.fillStyle='rgba(255,255,100,0.9)';
+    CTX.shadowColor='#ffff44'; CTX.shadowBlur=segH*2;
+    CTX.fillRect(bBarX,peakY,bBarW,segH);
+  }
+  CTX.shadowBlur=0;
+
+  // byline
+  _dmWordLabel(CTX,'AI GOVERNANCE \u00b7 CONTROL SYSTEMS \u00b7 ECONOMIC POLICY',
+    bx+bw*0.04, by+bh*0.02, bw*0.92, bh*0.05, '#7755aa');
+
+  // TAP TO ENTER button — LED panel, dual-tone cycling border
+  const btnW=bw*0.78, btnH=bh*0.14;
+  const btnX=bx+(bw-btnW)/2, btnY=by+bh*0.68;
+  const pulse=0.65+0.35*Math.sin(t*2.8);
+
+  CTX.fillStyle='rgba(0,0,0,0.88)';
+  roundRect(btnX,btnY,btnW,btnH,10); CTX.fill();
+
+  const hB1=(t*40)%360, hB2=(hB1+180)%360;
+  CTX.strokeStyle=`hsla(${hB1},100%,60%,${pulse})`;
+  CTX.lineWidth=2.5;
+  roundRect(btnX,btnY,btnW,btnH,10); CTX.stroke();
+  CTX.strokeStyle=`hsla(${hB2},100%,60%,${pulse*0.5})`;
+  CTX.lineWidth=1;
+  roundRect(btnX+3,btnY+3,btnW-6,btnH-6,8); CTX.stroke();
+
+  const hT=(t*50+120)%360;
+  CTX.shadowColor=`hsl(${hT},100%,65%)`; CTX.shadowBlur=12*pulse;
+  _dmWordLabel(CTX,'TAP TO ENTER',btnX+btnW*0.06,btnY+btnH*0.16,btnW*0.88,btnH*0.7,`hsl(${hT},100%,70%)`);
+  CTX.shadowBlur=0;
+
+  // oscilloscope wave strip
+  const waveY=by+bh*0.86, waveH=bh*0.10;
+  CTX.strokeStyle='rgba(0,255,150,0.5)'; CTX.lineWidth=1.5;
+  CTX.beginPath();
+  for(let px=0;px<bw;px+=2){
+    const phase2=px/bw*Math.PI*6;
+    const amp=waveH*0.4*(0.5+0.5*Math.sin(t*1.8+px*0.04));
+    const wy=waveY+waveH/2+amp*Math.sin(phase2+t*3.2);
+    px===0?CTX.moveTo(bx+px,wy):CTX.lineTo(bx+px,wy);
+  }
+  CTX.stroke();
+  CTX.strokeStyle='rgba(180,0,255,0.35)';
+  CTX.beginPath();
+  for(let px=0;px<bw;px+=2){
+    const phase2=px/bw*Math.PI*8+1.2;
+    const amp=waveH*0.3*(0.4+0.6*Math.abs(Math.sin(t*2.1+px*0.03)));
+    const wy=waveY+waveH/2+amp*Math.sin(phase2-t*2.5);
+    px===0?CTX.moveTo(bx+px,wy):CTX.lineTo(bx+px,wy);
+  }
+  CTX.stroke();
+}
+
+function roundRect(x,y,w,h,r){
+  CTX.beginPath();
+  CTX.moveTo(x+r,y);
+  CTX.arcTo(x+w,y,x+w,y+h,r);
+  CTX.arcTo(x+w,y+h,x,y+h,r);
+  CTX.arcTo(x,y+h,x,y,r);
+  CTX.arcTo(x,y,x+w,y,r);
+  CTX.closePath();
+}
+
+// ── TITLE CANVASES — per-card DM rainbow titles, same draw call
+// used by the splash/header. Re-collected after every re-render.
+let titleCanvasList=[];
+function setupTitleCanvases(){
+  titleCanvasList=[];
+  document.querySelectorAll('.title-canvas').forEach(canvas=>{
+    const rect=canvas.getBoundingClientRect();
+    const w=Math.max(40,Math.round(rect.width));
+    const h=34;
+    canvas.width=w; canvas.height=h;
+    titleCanvasList.push({canvas, ctx:canvas.getContext('2d'), text:canvas.dataset.title, w, h});
+  });
+}
+
+// ── MAIN DRAW LOOP ───────────────────────────────────────────
+function drawFrame(ts){
+  const dt=Math.min((ts-_last)/1000, 0.05);
+  _last=ts; AT=ts/1000;
+
+  CTX.fillStyle=C.bg;
+  CTX.fillRect(0,0,SW,SH);
+
+  CTX.strokeStyle='rgba(85,0,170,0.12)';
+  CTX.lineWidth=1;
+  const GRID=Math.round(SW*0.08);
+  for(let x=0;x<SW;x+=GRID){CTX.beginPath();CTX.moveTo(x,0);CTX.lineTo(x,SH);CTX.stroke();}
+  for(let y=0;y<SH;y+=GRID){CTX.beginPath();CTX.moveTo(0,y);CTX.lineTo(SW,y);CTX.stroke();}
+
+  _drawTicker(dt);
+  _drawBrackets();
+  _drawHeader();
+
+  if(STATE==='SPLASH') drawSplash(AT);
+
+  // redraw all visible per-card title canvases with the same rainbow clock
+  for(const tc of titleCanvasList){
+    tc.ctx.clearRect(0,0,tc.w,tc.h);
+    _dmRainbow(tc.ctx, tc.text, 0, 0, tc.w, tc.h, AT);
+  }
+
+  requestAnimationFrame(drawFrame);
+}
+
+// ── SPLASH DISMISS ───────────────────────────────────────────
+function enterHub(){
+  if(STATE!=='SPLASH') return;
+  STATE='HUB';
+  document.getElementById('hub-panel').classList.add('visible');
+}
+cv.addEventListener('click', enterHub);
+cv.addEventListener('touchstart', e=>{ e.preventDefault(); enterHub(); }, {passive:false});
+
+window.addEventListener('resize', resize);
+
+// ═══════════════════════════════════════════════════════════════
+// ESSAY DATA / HUB PANEL LOGIC
+// ═══════════════════════════════════════════════════════════════
+
+// SOURCE FORMAT OVERRIDE:
+// Each essay's `sources` object can include "markdown" and/or "html" keys.
+// - If only one is present, that's used with no toggle shown.
+// - If both are present, a MD / HTML toggle pill appears on the card,
+//   and `defaultSource` decides which one is selected initially.
+const essays = [
+  {
+    id: "provenance-economy",
+    title: "The Provenance Economy",
+    subtitle: "Native Multimodality, the Hightower Derivative, and the Case for Universal High Income",
+    date: "2026-06-17",
+    excerpt: "When synthetic output becomes infinite and free in every modality at once, scarcity cannot relocate to another modality. It has to relocate somewhere structurally different. A control-systems reading of native multimodality, and what it means for human economic value.",
+    tags: ["ai-governance", "control-systems", "economic-policy"],
+    sources: {
+      markdown: "https://github.com/aahigh/letters/blob/main/provenance-economy.md",
+      html: "https://github.com/aahigh/letters/blob/main/provenance-economy.html"
+    },
+    defaultSource: "markdown",
+    live: "https://ahightower.com/letters/provenance-economy",
+    og_image: "https://ahightower.com/og-provenance-economy.png"
+  },
+  {
+    id: "hightower-derivative",
+    title: "The Hightower Derivative",
+    subtitle: "Why AI Changes the Rate of Change, Not the Thinker",
+    date: "2026-04-01",
+    excerpt: "A framework asserting that AI changes the rate of change of cognitive output rather than displacing thinking. Maps onto PID control theory and has implications for governance, surveillance, and the future of human economic value.",
+    tags: ["ai-governance", "control-systems", "cryptography"],
+    sources: {
+      markdown: "https://github.com/aahigh/letters/blob/main/hightower-derivative.md"
+    },
+    defaultSource: "markdown",
+    live: "https://ahightower.com/letters/hightower-derivative",
+    og_image: "https://ahightower.com/og-hightower-derivative.png"
+  },
+  {
+    id: "higher-order-controls",
+    title: "Higher-Order Controls",
+    subtitle: "AI Governance, Hash-Committed Constraints, and the Proof-of-Human Ledger",
+    date: "2026-03-15",
+    excerpt: "A formal letter on AI governance connecting arcade control-systems background to PID-loop governance frameworks, hash-committed constraint architecture, and the principle that the math—not the operator—should be the trusted party.",
+    tags: ["ai-governance", "cryptography"],
+    sources: {
+      markdown: "https://github.com/aahigh/letters/blob/main/higher-order-controls.md"
+    },
+    defaultSource: "markdown",
+    live: "https://ahightower.com/letters/higher-order-controls",
+    og_image: "https://ahightower.com/og-higher-order-controls.png"
+  }
+];
+
+let currentFilter="all";
+let currentView="grid";
+const formatSelections={};
+const FORMAT_LABELS={markdown:"MD", html:"HTML"};
+
+function renderEssays(){
+  const container=document.getElementById("essays-container");
+  container.className = currentView==="list" ? "essays-list" : "essays-grid";
+
+  const filtered = currentFilter==="all" ? essays : essays.filter(e=>e.tags.includes(currentFilter));
+
+  container.innerHTML = filtered.map(essay=>{
+    const availableFormats=Object.keys(essay.sources);
+    const selectedFormat=formatSelections[essay.id]||essay.defaultSource||availableFormats[0];
+    const sourceUrl=essay.sources[selectedFormat];
+
+    const formatToggleHtml = availableFormats.length>1 ? `
+      <div class="format-toggle">
+        <span class="format-label">FORMAT:</span>
+        ${availableFormats.map(fmt=>`
+          <button class="format-pill ${fmt===selectedFormat?'active':''}"
+                  data-essay-id="${essay.id}" data-format="${fmt}">${FORMAT_LABELS[fmt]||fmt.toUpperCase()}</button>
+        `).join('')}
+      </div>` : '';
+
+    return `
+      <article class="essay-card" data-id="${essay.id}">
+        <div class="essay-meta">
+          <span>${new Date(essay.date).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'}).toUpperCase()}</span>
+        </div>
+        <canvas class="title-canvas" data-title="${essay.title.replace(/"/g,'&quot;')}"></canvas>
+        <span class="sr-only">${essay.title}</span>
+        ${essay.subtitle?`<p class="essay-subtitle">${essay.subtitle}</p>`:''}
+        <p class="essay-excerpt">${essay.excerpt}</p>
+        <div class="essay-tags">${essay.tags.map(tag=>`<span class="essay-tag">${tag}</span>`).join('')}</div>
+        ${formatToggleHtml}
+        <div class="essay-links">
+          <a href="${sourceUrl}" class="btn" target="_blank" rel="noopener">SOURCE</a>
+          <a href="${essay.live}" class="btn btn-primary" target="_blank" rel="noopener">READ LIVE</a>
+        </div>
+      </article>`;
+  }).join('');
+
+  document.getElementById("essay-count").textContent = filtered.length;
+  setupTitleCanvases();
+}
+
+document.querySelectorAll('[data-tag]').forEach(btn=>{
+  btn.addEventListener('click', e=>{
+    document.querySelectorAll('[data-tag]').forEach(b=>b.classList.remove('active'));
+    e.target.classList.add('active');
+    currentFilter=e.target.dataset.tag;
+    renderEssays();
+  });
+});
+
+document.querySelectorAll('[data-view]').forEach(btn=>{
+  btn.addEventListener('click', e=>{
+    document.querySelectorAll('[data-view]').forEach(b=>b.classList.remove('active'));
+    e.target.classList.add('active');
+    currentView=e.target.dataset.view;
+    renderEssays();
+  });
+});
+
+document.getElementById("essays-container").addEventListener('click', e=>{
+  if(e.target.classList.contains('format-pill')){
+    formatSelections[e.target.dataset.essayId]=e.target.dataset.format;
+    renderEssays();
+  }
+});
+
+// ── INIT ─────────────────────────────────────────────────────
+resize();
+renderEssays();
+requestAnimationFrame(drawFrame);
+</script>
+</body>
+</html>
