@@ -1,0 +1,8 @@
+# Package drops. Letters are the html, not the zip.
+*.zip
+
+# OS junk
+.DS_Store
+EOF
+ga .gitignore
+com ignore zip drops
