@@ -172,6 +172,7 @@ footer .sep{color:#442266;margin:0 0.5rem}
 
   <div class="controls">
     <button class="pill active" data-tag="all">ALL</button>
+    <button class="pill" data-tag="groups">GROUPS</button>
     <button class="pill" data-tag="ai-governance">AI GOVERNANCE</button>
     <button class="pill" data-tag="control-systems">CONTROL SYSTEMS</button>
     <button class="pill" data-tag="economic-policy">ECONOMIC POLICY</button>
@@ -618,6 +619,20 @@ window.addEventListener('resize', resize);
 // - If both are present, a MD / HTML toggle pill appears on the card,
 //   and `defaultSource` decides which one is selected initially.
 const essays = [
+  {
+    id: "fb-groups",
+    title: "Subgroups as Views, Not Separate Groups",
+    subtitle: "A Proposal to Facebook Groups",
+    date: "2026-10-05",
+    excerpt: "Three changes from an Admin Council member: subgroups as one-click views of the main group, per-post visibility with an admin retro-toggle, and moderation that can tell a joke from a violation.",
+    tags: ["groups"],
+    sources: {
+      html: "https://github.com/aahigh/letters/blob/main/fb-groups.html"
+    },
+    defaultSource: "html",
+    live: "https://letters.ahightower.com/fb-groups.html",
+    og_image: "https://letters.ahightower.com/fb-groups.png"
+  },
   {
     id: "compression-layer",
     title: "The Compression Layer",

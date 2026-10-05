@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subgroups as Views, Not Separate Groups · A Proposal to Facebook Groups</title>
+<meta name="description" content="A proposal from Aaron Michael Hightower, admin of THE HIGH TOWER DISTRICT and invited member of Facebook's Admin Council for Groups: subgroups as one-click views, per-post visibility with an admin retro-toggle, and moderation that can tell a joke from a violation.">
+<meta name="author" content="Aaron Michael Hightower">
+<link rel="canonical" href="https://letters.ahightower.com/fb-groups.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Subgroups as Views, Not Separate Groups">
+<meta property="og:description" content="Three changes for Facebook Groups: subgroups as views of the main group, per-post visibility with an admin retro-toggle, and moderation that can tell a joke from a violation.">
+<meta property="og:url" content="https://letters.ahightower.com/fb-groups.html">
+<meta property="og:image" content="https://letters.ahightower.com/fb-groups.png">
+<meta property="og:image:secure_url" content="https://letters.ahightower.com/fb-groups.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A proposal to Facebook Groups: subgroups as views, not separate groups. Aaron Michael Hightower, 5 October 2026.">
+<meta property="article:published_time" content="2026-10-05">
+<meta property="article:author" content="Aaron Michael Hightower">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Subgroups as Views, Not Separate Groups">
+<meta name="twitter:description" content="A proposal to Facebook Groups from an Admin Council member: subgroups as views, per-post visibility, and fairer moderation.">
+<meta name="twitter:image" content="https://letters.ahightower.com/fb-groups.png">
+<meta name="twitter:image:alt" content="A proposal to Facebook Groups: subgroups as views, not separate groups.">
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=IM+Fell+English:ital@0;1&display=swap');
+
+  :root {
+    --ink: #1a1410;
+    --paper: #f5f0e8;
+    --rust: #8b3a1a;
+    --gold: #b8860b;
+    --fade: #9a8f7e;
+    --rule: #c8b89a;
+    --card: #fbf7f1;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IM Fell English', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.85;
+    min-height: 100vh;
+    padding: 28px 14px 60px;
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent calc(1.85em - 1px),
+        rgba(180,160,120,0.15) calc(1.85em - 1px),
+        rgba(180,160,120,0.15) 1.85em
+      );
+    background-size: 100% 1.85em;
+    background-attachment: local;
+  }
+
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    background: var(--paper);
+    padding: 48px 28px 56px;
+    box-shadow:
+      0 2px 4px rgba(0,0,0,0.08),
+      0 8px 32px rgba(0,0,0,0.12),
+      inset 0 0 0 1px rgba(180,150,100,0.2);
+    position: relative;
+  }
+
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 18px;
+  }
+
+  .masthead {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fade);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 16px;
+    margin-bottom: 36px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: flex-end;
+  }
+
+  .masthead .brand {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--rust);
+    letter-spacing: 0.22em;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.15em;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+
+  h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    margin: 1.6em 0 0.6em;
+    font-size: 1.45em;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  h3 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin: 1.4em 0 0.6em;
+  }
+
+  .subtitle {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 1.05em;
+    color: var(--rust);
+    margin-bottom: 18px;
+    line-height: 1.45;
+  }
+
+  .byline {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fade);
+    margin-bottom: 36px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--rule);
+    line-height: 1.7;
+  }
+
+  .meta-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin: 0 0 36px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .meta-row dt {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fade);
+    margin-bottom: 4px;
+  }
+
+  .meta-row dd {
+    font-family: 'IM Fell English', Georgia, serif;
+    font-size: 16px;
+    line-height: 1.45;
+  }
+
+  p { margin-bottom: 1.15em; }
+
+  p.lead::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.4em;
+    font-weight: 700;
+    float: left;
+    line-height: 0.78;
+    margin-right: 8px;
+    margin-top: 6px;
+    color: var(--rust);
+  }
+
+  .pull-quote {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 1.15em;
+    line-height: 1.5;
+    color: var(--rust);
+    border-left: 3px solid var(--gold);
+    padding: 8px 0 8px 18px;
+    margin: 28px 0 32px;
+    clear: both;
+  }
+
+  ul { margin: 0 0 1.2em 1.1em; }
+  li { margin-bottom: 0.7em; }
+  li strong { font-family: 'Playfair Display', Georgia, serif; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 22px;
+    font-size: 15px;
+  }
+
+  th, td {
+    text-align: left;
+    vertical-align: top;
+    padding: 8px 8px 8px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fade);
+  }
+
+  td.num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    text-align: right;
+    white-space: nowrap;
+    color: var(--rust);
+  }
+
+  .section-break {
+    text-align: center;
+    color: var(--fade);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.4em;
+    margin: 36px 0;
+    user-select: none;
+  }
+
+  .sign {
+    margin-top: 28px;
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  .sign .name {
+    font-size: 1.25em;
+    font-weight: 700;
+  }
+
+  .sign .role {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fade);
+    margin-top: 6px;
+    line-height: 1.6;
+  }
+
+  .colophon {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fade);
+    border-top: 1px solid var(--rule);
+    padding-top: 16px;
+    margin-top: 40px;
+    line-height: 1.7;
+  }
+
+  .colophon a { color: var(--rust); }
+
+  @media (min-width: 700px) {
+    body { padding: 60px 20px; }
+    .page { padding: 72px 64px 64px; }
+    .meta-row { grid-template-columns: 1.3fr 1.2fr 0.7fr; }
+    h1 { font-size: 2.5em; }
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .page { box-shadow: none; max-width: none; }
+  }
+</style>
+</head>
+<body>
+<article class="page">
+  <p class="kicker">A proposal to Facebook Groups</p>
+  <header class="masthead">
+    <span class="brand">Letters</span>
+    <span>5 October 2026</span>
+  </header>
+
+  <h1>Subgroups as views, not separate groups</h1>
+  <p class="subtitle">Per-post visibility with an admin retro-toggle, and fairer moderation. Three changes that would let admins categorize conversation the way communities actually talk, without asking every member to join a maze of satellite groups, and let members trust that a joke will be read as a joke.</p>
+
+  <dl class="meta-row">
+    <div>
+      <dt>From</dt>
+      <dd>Aaron Michael Hightower<br>Admin, THE HIGH TOWER DISTRICT<br>Fresno, California</dd>
+    </div>
+    <div>
+      <dt>Standing</dt>
+      <dd>Invited member, Facebook Admin Council for Groups<br>Among the first invited admins</dd>
+    </div>
+    <div>
+      <dt>Date</dt>
+      <dd>October 5, 2026</dd>
+    </div>
+  </dl>
+
+  <h2>Executive summary</h2>
+  <p class="lead">Facebook Groups works best when a community can hold many kinds of conversation in one place. Today it cannot, quite. An admin who wants a politics lane, a comedy lane, and a neighborhood-crime lane must spin up separate groups and persuade every member to join each one, a funnel that loses most people at the first click. And an admin who once made a group public cannot revisit that choice post by post, even for posts that predate a later move to private.</p>
+  <p>This proposal asks for three linked changes. First, make subgroups true subgroups: views of the main group that any member can join or leave in one click, with posts appearing, disappearing, or collapsing in their feed accordingly. Second, add per-post visibility, including a group mode that allows both public and members-only posts, and let admins convert public posts made before a chosen date to members-only, reversibly, unless the author has set a post private, in which case private is final. Third, make moderation fairer: human review that can recognize a joke in context, no cross-profile punishment of a professional profile's monetization standing over dating-profile activity, and real safeguards against weaponized reporting.</p>
+  <p>All three ideas come from the same place: years of running real communities, and in the case of subgroups, a discussion in Facebook's own Admin Council for Groups where the idea drew broad agreement. Implementing them would remove the largest sources of friction I encounter as an admin, and, I believe, the same is true for thousands of others.</p>
+
+  <h2>Background and standing</h2>
+  <p>I was invited to join Facebook's Admin Council for Groups when it was first formed. As I recall it, I was among the first ten people invited into the council group, which has since grown to roughly four thousand members. Facebook said at the time that it had spent considerable effort selecting group administrators based on perceived value, people whose experience running real communities could usefully inform the product.</p>
+  <p>It was in that council that I first raised the idea of subgroups. As far as I know, I was the first to put the suggestion forward there, and it was one many people got behind. In the discussion that followed, I do not recall anyone identifying a problem with the idea in principle. The general response was agreement that communities need a lighter way to organize topics than launching a new group for each one. The idea has stayed with me because my own groups demonstrate both its promise and, in the current implementation, its limits.</p>
+
+  <h2>How this community works today</h2>
+  <p>I run THE HIGH TOWER DISTRICT, a Fresno community group of 798 members covering Tower District nightlife, bands, and food, alongside seven satellite groups organized by topic:</p>
+  <table>
+    <thead>
+      <tr><th>Group</th><th>Focus</th><th>Members</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>THE HIGH TOWER DISTRICT</td><td>Main community. Nightlife, bands, food, local life</td><td class="num">798</td></tr>
+      <tr><td>Crime satellite</td><td>Neighborhood safety and incident discussion</td><td class="num">81</td></tr>
+      <tr><td>Bikes satellite</td><td>Cycling and local rides</td><td class="num">23</td></tr>
+      <tr><td>Games satellite</td><td>Games and skill competitions</td><td class="num">13</td></tr>
+      <tr><td>Artificial Intelligence satellite</td><td>AI discussion</td><td class="num">12</td></tr>
+      <tr><td>Faith satellite</td><td>Faith and community support</td><td class="num">10</td></tr>
+      <tr><td>Comedy satellite</td><td>Local comedy</td><td class="num">8</td></tr>
+      <tr><td>Politics satellite</td><td>Local and national politics</td><td class="num">5</td></tr>
+    </tbody>
+  </table>
+  <p>The constellation works, but only because members were willing to be persuaded, one group at a time. Every satellite is a separate join decision, and each decision point sheds people who would happily read the topic if it were simply there. The politics satellite makes the problem plain: plenty of members have views on local politics, but very few will click through a dedicated join funnel for a topic they are merely curious about. The result is that I cannot categorize conversations the way I want, and members cannot easily choose the mix they want either.</p>
+  <p>That is the friction this proposal targets.</p>
+
+  <h2>Proposal 1: Subgroups as views of the main group</h2>
+  <h3>The change</h3>
+  <ul>
+    <li><strong>Main-group membership is the only membership that matters.</strong> Anyone who belongs to the main group can join or leave any of its subgroups in a single click. No separate application, approval, or funnel.</li>
+    <li><strong>Subgroups are views, not silos.</strong> Joining a subgroup makes its posts appear in the member's experience of the main group. Leaving makes them disappear or collapse. Nothing else about the member's standing changes.</li>
+    <li><strong>Posting stays simple.</strong> A post made to a subgroup is a post in the main group, tagged to that lane. Admins can move a post between lanes when a conversation lands in the wrong place.</li>
+    <li><strong>Discovery is honest.</strong> A member browsing the main group can see which subgroups exist and sample one without committing to anything beyond a click.</li>
+  </ul>
+  <p class="pull-quote">A subgroup is a derivative of the main community, not a new community. Its membership should be inherited, and its cost of entry should be one click, the same cost as leaving.</p>
+  <p>Under this model, my eight groups become one group with seven lanes. A member who wants crime updates and comedy but not politics gets exactly that mix, and can change it on a whim. A member who wants everything sees everything. The admin's job returns to moderating conversation rather than marketing satellite groups to people who are already members.</p>
+
+  <h2>Proposal 2: Per-post visibility, with an admin retro-toggle</h2>
+  <p>The second problem is visibility. When I moved my main group from public to private, the change was one-way: the group cannot be made public again. I accept that a group-level switch may need to be sticky. But group level is the wrong granularity for the actual question, which is almost always about individual posts. I am asking for three things.</p>
+  <h3>The changes</h3>
+  <ul>
+    <li><strong>A third group mode: allow both.</strong> Alongside fully public and fully private, a group should be able to permit both public and members-only posts, with the choice made per post by its author within what the admin allows.</li>
+    <li><strong>An admin retro-toggle for older posts.</strong> An admin should be able to select a date and convert posts made before that date from public to members-only, even if they were originally posted publicly. For instance, everything posted before a group changed its character or its membership grew.</li>
+    <li><strong>Reversibility with a member floor.</strong> A post the admin has converted to members-only remains flagged as eligible to be made public again by the admin at any time. But if the author later sets their own post to private, that choice is a hard floor: the post stays private, and no admin action can override it.</li>
+  </ul>
+  <p>That last rule matters. It gives members a guarantee Facebook can state plainly: your private setting is final. And it gives admins a reversible tool instead of an irreversible one, the difference between a tool admins will use carefully and a switch they are afraid to touch at all.</p>
+
+  <h2>Proposal 3: Moderation that can tell a joke from a violation</h2>
+  <p>The first two proposals are about structure. This one is about judgment, what happens when automated moderation reads a joke as a crime and punishes a whole account for it.</p>
+  <h3>What happened</h3>
+  <p>I barely used my Facebook Dating profile. I posted a joke there, trying, as one does on a dating profile, to make someone laugh, and some keywords triggered a "soliciting" flag. I was quite shocked to find Facebook had then restricted my main professional profile's ability to monetize, over something I said to get a laugh on a profile I hardly touched.</p>
+  <p>I am a 57-year-old man. The idea that I am literally willing to sell my body for cash is, to me anyway, kind of hilarious. It was a joke, and an obvious one. Treating me like a prostitute for telling it is the kind of script-flipping Isaiah 5:20 describes: calling good evil and evil good, to someone's advantage. That it happened in a money context makes it worse. I do not make any money on this platform. I have not made any money of any kind since I retired in 2018. Yet my professional account's monetization standing is what got harmed, over a joke on a different profile. That is an overstepping of boundaries, and taking a joke that seriously, administratively, is literally laughable.</p>
+  <p>I am not saying nobody on the dating profile was offended, or that nobody took it literally. Somebody may have. It is still just a joke, and a system that cannot tell the difference, in a context built for flirtation and humor, will keep making this mistake at scale.</p>
+  <h3>The broader problem</h3>
+  <p>This case is one instance of patterns I have run into repeatedly:</p>
+  <ul>
+    <li><strong>AI-driven suspensions that misread jokes.</strong> Automation flags keywords without context, and the result is restrictions, including, in my case, multiple limitations on going live that were never appropriate, imposed on people who intended nothing but a laugh.</li>
+    <li><strong>Weaponized reporting.</strong> Sadistic actors memorize the terms of service not to follow them, but to weaponize them against people they dislike, knowing the automation will do the rest. That problem is not dealt with on this platform, and it should be.</li>
+    <li><strong>Cross-profile punishment.</strong> An action on one profile, a dating profile, barely used, restricted my professional profile's monetization standing. From the member's side, that reads as one account punished for another account's joke.</li>
+  </ul>
+  <p>I have never felt administered fairly on this platform, and I say that as someone also invited into its Admin Council. Both things are true, and the gap between them is the problem.</p>
+  <p>And there is a timing question I cannot ignore. This restriction landed when I needed advanced reach to promote Kyle Kirkland, the Republican candidate for Congress in CA-21, challenging Jim Costa, a man who has recently won two legal battles against Attorney General Rob Bonta. I am not stating as fact why the limitation hit when it did. But a limitation with that timing and that effect could be interpreted as politically motivated, and if intent were determined, it would run afoul of the election-manipulation concerns raised around platform interference. Platforms do not get to shrug that off as a keyword error.</p>
+
+  <h2>The asks</h2>
+  <ul>
+    <li><strong>Human review that understands jokes and dating context.</strong> Before a solicitation-type flag on a dating profile restricts anything, a person should read it in context. Humor and flirtation are the native languages of dating profiles. Moderation that cannot read them should not restrict accounts over them.</li>
+    <li><strong>No cross-profile monetization punishment.</strong> Dating-profile activity should not reduce a separate professional profile's monetization standing. Facebook cannot ask professionals to build on the platform while holding them hostage to an unrelated profile's keyword scan.</li>
+    <li><strong>Safeguards against weaponized reporting.</strong> Track bad-faith reporters, weigh report history in enforcement, and give members a meaningful appeal. A terms-of-service expert should be a good citizen, not an assassin with a rulebook.</li>
+  </ul>
+  <p class="pull-quote">Enforcement should punish conduct, not keywords. A joke told to make someone laugh is not solicitation, a dating profile is not a storefront, and one profile's flag is not another profile's crime.</p>
+
+  <h2>Why this helps</h2>
+  <ul>
+    <li><strong>Members</strong> get a feed they have actually chosen, topic by topic, without surrendering their place in the main community to change it, and moderation that reads what they wrote before it restricts what they can do.</li>
+    <li><strong>Admins</strong> get to organize conversation instead of fragmenting it, and to revisit visibility decisions at the level where those decisions were really made: the post.</li>
+    <li><strong>Facebook</strong> gets the engagement that currently leaks away at every satellite join funnel, cleaner topical signals from lanes members opted into deliberately, and fewer absurd enforcement stories doing quiet damage to trust in its professional tools.</li>
+  </ul>
+
+  <h2>Implementation notes</h2>
+  <p>None of these changes requires rethinking Groups from the ground up. Subgroups-as-views is a membership rule (inherit from the parent group) plus a feed rule (show, hide, or collapse by lane). Per-post visibility is a flag on the post, a third option in group settings, and a bulk conversion tool keyed to a date the admin picks, with the author's private setting checked before any conversion applies. Fairer moderation is a review rule (a human reads context before a cross-profile restriction applies), a scope rule (monetization standing is not punished for an unrelated profile's activity), and a history rule (reporter track records count). The member-facing signals are equally modest: a lane label on subgroup posts, a visibility indicator on each post, a clear notice when an admin conversion affects a member's older post, with the author's private option always one click away, and, when a restriction does land, a plain statement of what triggered it and how to appeal to a person.</p>
+
+  <h2>Closing</h2>
+  <p>I have run these groups for years, and I raised the subgroups idea in the Admin Council because I could already see the shape of the problem from inside a real community. The council's response then was general agreement, and nothing in the years since has suggested a problem with the idea itself, only the cost of leaving it unbuilt, which admins currently pay in fragmented groups and conversations that never find their audience.</p>
+  <p>I believe these changes should be implemented. If they are, it would mean a great deal, and, I think, would simply be accurate, for Facebook to acknowledge where the subgroups idea was first raised. Credit of that kind costs nothing and tells every admin in the council that contributing an idea there is worth doing. And on moderation, the ask is smaller still: read the joke before you ban the joker. Either way, I offer this proposal in the spirit it was first made: as an admin who wants the tool to fit the communities it hosts.</p>
+
+  <div class="sign">
+    <p class="name">Aaron Michael Hightower</p>
+    <p class="role">Admin, THE HIGH TOWER DISTRICT · Fresno, California<br>Member, Facebook Admin Council for Groups</p>
+  </div>
+
+  <footer class="colophon">
+    Prepared October 5, 2026. Group member counts reflect the groups as administered on that date.<br>
+    <a href="https://letters.ahightower.com/">letters.ahightower.com</a>
+    · the High Tower District · Fresno
+  </footer>
+</article>
+</body>
+</html>
